@@ -24,8 +24,14 @@ config :phoenix_svelte, PhoenixSvelteWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "ygw7TKD89Z7aqsGN1bm/9N42oPyqhKUZdNLfj9rxQfiw+iR6PDH3iQ1VBAcupevi",
   watchers: [
+	# Watcher for sveltex files
+	node: ["build.js", "--watch", cd: Path.expand("../assets", __DIR__)],
+
+	# Watcher for sveltex files
+	node: ["build.js", "--watch", cd: Path.expand("../assets", __DIR__)],
+
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    # # esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
