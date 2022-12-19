@@ -18,6 +18,9 @@ defmodule PhoenixSvelteWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/login", LoginController, :login
+    get "/register", RegisterController, :register
+
   end
 
   # Other scopes may use custom stacks.
