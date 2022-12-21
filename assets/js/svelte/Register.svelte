@@ -12,15 +12,15 @@
     }
 
   $: submit = async () => {
-    await axios.post('http://localhost:4000/register', data)
+    await api.post('register', data)
 
     await push('/login')
   }
 </script>
 
-<main class="form-signin">
+<main class="mb-3 mt-5 form-signin container">
   <form on:submit|preventDefault={submit}>
-    <h1 class="h3 mb-3 fw-normal">Register</h1>
+    <h1 class="h3 mb-3 fw-normal">Please register</h1>
   
     <div class="mb-3 form-floating">
       <input bind:value={name} type="text" class="form-control" placeholder="Name">
@@ -28,12 +28,12 @@
     </div>
 
     <div class="mb-3 form-floating">
-      <input bind:value={email} type="email" class="form-control" placeholder="Name">
+      <input bind:value={email} type="email" class="form-control" placeholder="Email">
       <label for="">Email</label>
     </div>
 
     <div class="mb-3 form-floating">
-      <input bind:value={password} type="password" class="form-control" placeholder="Name">
+      <input bind:value={password} type="password" class="form-control" placeholder="Password">
       <label for="">Password</label>
     </div>
 
