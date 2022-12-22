@@ -18,7 +18,7 @@ async function login(name,pass) {
 
 	instance.defaults.headers['x-csrf-token'] = res.data.csrf_token;
 
-	res = await instance.post('https://172.16.220.133/login',{username:name,password:pass});
+	res = await instance.post('https://localhost/login',{username:name,password:pass});
 
 	console.log(res.statusCode);
 	console.log(res);
