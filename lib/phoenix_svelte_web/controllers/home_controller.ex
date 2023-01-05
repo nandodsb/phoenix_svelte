@@ -1,4 +1,4 @@
-defmodule PhoenixSvelteWeb.PageController do
+defmodule PhoenixSvelteWeb.HomeController do
   use PhoenixSvelteWeb, :controller
 
   def index(conn, _params) do

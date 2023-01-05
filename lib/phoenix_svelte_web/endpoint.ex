@@ -46,5 +46,7 @@ defmodule PhoenixSvelteWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug Pow.Plug.Session, otp_app: :phoenix_svelte
+  plug CORSPlug, origin: ["http://localhost:3000"]
   plug PhoenixSvelteWeb.Router
 end

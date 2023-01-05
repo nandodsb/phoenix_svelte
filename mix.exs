@@ -49,7 +49,12 @@ defmodule PhoenixSvelte.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:svonix, "~> 0.6"}
+      {:svonix, "~> 0.6"},
+      {:cors_plug, "~> 3.0"},
+      {:pow, "~> 1.0.27"},
+      {:argon2_elixir, "~> 3.0"},
+      {:bamboo, "~> 1.1"},
+      
     ]
   end
 

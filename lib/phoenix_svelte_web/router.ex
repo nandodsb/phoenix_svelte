@@ -1,5 +1,6 @@
 defmodule PhoenixSvelteWeb.Router do
   use PhoenixSvelteWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -10,18 +11,35 @@ defmodule PhoenixSvelteWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/", PhoenixSvelteWeb do
-    pipe_through :browser
+  scope "/" do
+    pipe_through [:browser, :api]
 
-    get "/", PageController, :index
-    get "/login", LoginController, :login
-    get "/register", RegisterController, :register
-
+    pow_routes()
   end
+
+  scope "/", PhoenixSvelteWeb do
+    pipe_through [:browser, :api]
+    get("/", HomeController, :index)
+  end
+
+  scope "/api" do
+    pipe_through [:api]
+
+    resources("/registration", RegistrationController, singleton: true, only: [:create])
+    resources("/session", SessionController, singleton: true, only: [:create, :delete])
+    post("/session/renew", SessionController, :renew)
+  end
+
+
 
   # Other scopes may use custom stacks.
   # scope "/api", PhoenixSvelteWeb do
