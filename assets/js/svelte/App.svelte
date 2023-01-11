@@ -5,7 +5,7 @@
 	import Router, { link } from 'svelte-spa-router'
 
 	const routes = {
-		'/': Home,
+		'/api': Home,
 		'/api/session/new': Login,
 		'/api/registration/new': Register,
 	}
@@ -20,7 +20,7 @@
 				class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
 			>
 				<li>
-					<a href="/" use:link class="nav-link px-2 text-white">Home</a>
+					<a href="/api" use:link class="nav-link px-2 text-white">Home</a>
 				</li>
 			</ul>
 

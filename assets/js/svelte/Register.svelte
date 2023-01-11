@@ -4,7 +4,7 @@
 
 	let email = ''
 	let password = ''
-	let confirm_password = ''
+	let password_confirmation = ''
 
 	let csrfToken = document
 		.querySelector("meta[name='csrf-token']")
@@ -16,11 +16,11 @@
 			user: {
 				email,
 				password,
-				confirm_password,
+				password_confirmation,
 			},
 		}
 
-		const response = await api.post('/registration', data)
+		const response = await api.post('/api/registration', data)
 		console.log(response)
 		console.log(data)
 		if (response.status === 200) {
@@ -60,12 +60,12 @@
 
 		<div class="mb-3 form-floating">
 			<input
-				bind:value={confirm_password}
+				bind:value={password_confirmation}
 				type="password"
 				class="form-control"
 				placeholder="Password"
 			/>
-			<label for="confirm_password">Confirm Password</label>
+			<label for="password_confirmation">Confirm Password</label>
 		</div>
 
 		<button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>

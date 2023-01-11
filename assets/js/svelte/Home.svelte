@@ -1,50 +1,49 @@
 <script>
 	import { onMount } from 'svelte'
 	import api from './api'
-	import { push } from 'svelte-spa-router'
+	import { push, link } from 'svelte-spa-router'
+	import { accessToken, renewalToken } from './store'
 
-	let csrfToken = document
-		.querySelector("meta[name='csrf-token']")
-		.getAttribute('content')
+	// let csrfToken = document
+	// 	.querySelector("meta[name='csrf-token']")
+	// 	.getAttribute('content')
 
 	let message = 'You are not logged in'
 
 	onMount(async () => {
 		const data = {
-			_csrf_token: csrfToken,
-			user: {
-				email,
-				password,
-			},
+			accessToken,
+			renewalToken,
 		}
-		const response = await api.get('/session', data)
-		console.log(data)
+		const response = await api.get('/', data)
+
 		if (response.status === 200) {
 			message = `Hi ${response.data.name}`
+			await push('/api')
 		}
 
 		if (response.status === 404) {
 			message = `${response}`
 		} else {
-			await push('/')
+			await push('/api')
 		}
 	})
 
-	$: handleLogout = async () => {
-		const data = {
-			_csrf_token: '',
-			user: {},
-		}
-		await api.delete('/session', data)
-
-		await push('/session/new')
-		return false
+	async function handleLogout() {
+		const data = {}
+		await api.delete('/api/session', data)
+		console.log('LOGOUT SUCCESS')
+		return
 	}
 </script>
 
 <main class="container mt-5 text-center">
 	<h3>{message}</h3>
 
-	<!-- svelte-ignore a11y-invalid-attribute -->
-	<a href="#" class="btn btn-lg btn-primary" on:click={handleLogout}>Logout</a>
+	<a
+		href="/api/session/new"
+		use:link
+		class="btn btn-lg btn-primary"
+		on:click={handleLogout}>Logout</a
+	>
 </main>

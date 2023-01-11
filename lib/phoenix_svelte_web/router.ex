@@ -9,6 +9,7 @@ defmodule PhoenixSvelteWeb.Router do
     plug :put_root_layout, {PhoenixSvelteWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Pow.Plug.Session, otp_app: :phoenix_svelte
   end
 
   pipeline :protected do
@@ -18,26 +19,41 @@ defmodule PhoenixSvelteWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug PhoenixSvelteWeb.APIAuthPlug, otp_app: :phoenix_svelte
+    plug :fetch_session
+    plug :fetch_live_flash
   end
 
   scope "/" do
-    pipe_through [:browser, :api]
+    pipe_through [:browser]
+
+    pow_routes()
+  end
+
+  scope "/api" do
+    pipe_through [:api]
 
     pow_routes()
   end
 
   scope "/", PhoenixSvelteWeb do
-    pipe_through [:browser, :api]
+    pipe_through [:browser]
     get("/", HomeController, :index)
   end
 
-  scope "/api" do
+  scope "/api", PhoenixSvelteWeb.API, as: :phoenix_svelte_api do
     pipe_through [:api]
 
     resources("/registration", RegistrationController, singleton: true, only: [:create])
     resources("/session", SessionController, singleton: true, only: [:create, :delete])
     post("/session/renew", SessionController, :renew)
   end
+
+  # scope "/api", PhoenixSvelteWeb.API, as: :phoenix_svelte_api do
+  #   pipe_through [:api, :protected]
+
+  #   # Your protected API endpoints here
+  # end
 
 
 
@@ -53,24 +69,24 @@ defmodule PhoenixSvelteWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+  # if Mix.env() in [:dev, :test] do
+  #   import Phoenix.LiveDashboard.Router
 
-    scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: PhoenixSvelteWeb.Telemetry
-    end
-  end
+  #   scope "/" do
+  #     pipe_through :browser
+  #     live_dashboard "/dashboard", metrics: PhoenixSvelteWeb.Telemetry
+  #   end
+  # end
 
-  # Enables the Swoosh mailbox preview in development.
-  #
-  # Note that preview only shows emails that were sent by the same
-  # node running the Phoenix server.
-  if Mix.env() == :dev do
-    scope "/dev" do
-      pipe_through :browser
+  # # Enables the Swoosh mailbox preview in development.
+  # #
+  # # Note that preview only shows emails that were sent by the same
+  # # node running the Phoenix server.
+  # if Mix.env() == :dev do
+  #   scope "/dev" do
+  #     pipe_through :browser
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
-    end
-  end
+  #     forward "/mailbox", Plug.Swoosh.MailboxPreview
+  #   end
+  # end
 end

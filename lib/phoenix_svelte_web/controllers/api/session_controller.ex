@@ -1,4 +1,4 @@
-defmodule PhoenixSvelteWeb.SessionController do
+defmodule PhoenixSvelteWeb.API.SessionController do
   use PhoenixSvelteWeb, :controller
 
   alias PhoenixSvelteWeb.APIAuthPlug

@@ -1,4 +1,4 @@
-defmodule PhoenixSvelteWeb.RegistrationController do
+defmodule PhoenixSvelteWeb.API.RegistrationController do
   use PhoenixSvelteWeb, :controller
 
   alias Ecto.Changeset
