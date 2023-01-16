@@ -2,7 +2,7 @@ import { writable, derived } from 'svelte/store'
 
 export let tokens = writable('')
 
-
+export let userLoggedName = writable('')
 
 export let accessToken = writable('')
 // export let setAccessToken = derived(

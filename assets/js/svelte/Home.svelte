@@ -2,23 +2,19 @@
 	import { onMount } from 'svelte'
 	import api from './api'
 	import { push, link } from 'svelte-spa-router'
-	import { accessToken, renewalToken } from './store'
-
-	// let csrfToken = document
-	// 	.querySelector("meta[name='csrf-token']")
-	// 	.getAttribute('content')
+	import { accessToken, renewalToken, userLoggedName } from './store'
 
 	let message = 'You are not logged in'
 
 	onMount(async () => {
-		const data = {
+		const data = {			
 			accessToken,
 			renewalToken,
 		}
-		const response = await api.get('/', data)
+		const response = await api.get('/', data)		
 
 		if (response.status === 200) {
-			message = `Hi ${response.data.name}`
+			message = `Hi `
 			await push('/api')
 		}
 
