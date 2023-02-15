@@ -1,7 +1,12 @@
 <script lang="ts">
 	import api from './api'
 	import { push } from 'svelte-spa-router'
-	import { accessToken, renewalToken, userLoggedName } from './store'
+	import {
+		accessToken,
+		renewalToken,
+		loginSuccess,
+		userLoggedName,
+	} from './store'
 
 	// interface ITokens {
 	// 	tokens: [
@@ -16,7 +21,7 @@
 	let password = ''
 	let tokens = []
 
-	let setAccessToken, setRenewalToken, setUserLoggedName
+	export let setAccessToken, setRenewalToken, setUserLoggedName, setLoginSuccess
 
 	accessToken.subscribe((value) => {
 		setAccessToken = value
@@ -24,6 +29,10 @@
 
 	renewalToken.subscribe((value) => {
 		setRenewalToken = value
+	})
+
+	loginSuccess.subscribe((value) => {
+		setLoginSuccess = value
 	})
 
 	userLoggedName.subscribe((value) => {
@@ -45,7 +54,8 @@
 		let response = await api.post('/api/session', user)
 
 		if (response.status === 200) {
-			let info = response.data			
+			setLoginSuccess = true
+			let info = response.data
 			let tokensData = info.data
 			tokens.push(tokensData)
 			setAccessToken = tokens[0].access_token

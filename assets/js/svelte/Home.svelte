@@ -2,18 +2,24 @@
 	import { onMount } from 'svelte'
 	import api from './api'
 	import { push, link } from 'svelte-spa-router'
-	import { accessToken, renewalToken, userLoggedName } from './store'
+	import {
+		accessToken,
+		renewalToken,
+		userLoggedName,
+		loginSuccess,
+	} from './store'
 
 	let message = 'You are not logged in'
 
 	onMount(async () => {
-		const data = {			
+		const data = {
 			accessToken,
 			renewalToken,
 		}
-		const response = await api.get('/', data)		
+		const response = await api.get('/', data)
 
 		if (response.status === 200) {
+			loginSuccess
 			message = `Hi `
 			await push('/api')
 		}
@@ -36,10 +42,16 @@
 <main class="container mt-5 text-center">
 	<h3>{message}</h3>
 
-	<a
-		href="/api/session/new"
-		use:link
-		class="btn btn-lg btn-primary"
-		on:click={handleLogout}>Logout</a
-	>
+	{#if loginSuccess === true}
+		<a
+			href="/api/session/new"
+			use:link
+			class="btn btn-lg btn-primary"
+			on:click={handleLogout}>Logout</a
+		>
+	{:else}
+		<a href="/api/session/new" use:link class="btn btn-lg btn-secondary"
+			>Login</a
+		>
+	{/if}
 </main>
