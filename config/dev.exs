@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :phoenix_svelte, PhoenixSvelte.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "",
   database: "phoenix_svelte_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
